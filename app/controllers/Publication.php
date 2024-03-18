@@ -33,7 +33,7 @@ class Publication extends \app\core\Controller
                 //insert it
                 $publication->insert();
                 //redirect
-                header('location:/Profile/create');
+                header('location:/Publication/index');
             }
         } else {
             $this->view('Publication/create');
