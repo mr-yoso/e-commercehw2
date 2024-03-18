@@ -31,7 +31,7 @@ class Profile extends \app\core\Controller{
 			//insert it
 			$profile->insert();
 			//redirect
-			header('location:/Publication/create');
+			header('location:/Publication/index');
 			}
 		}else{
 			$this->view('Profile/create');
