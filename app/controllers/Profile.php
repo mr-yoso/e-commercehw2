@@ -17,16 +17,22 @@ class Profile extends \app\core\Controller{
 	public function create(){
 		if($_SERVER['REQUEST_METHOD'] === 'POST'){//data is submitted through method POST
 			//make a new profile object
+
+			$user_id = $_SESSION['user_id'];
+
+			if($user_id){
+
 			$profile = new \app\models\Profile();
 			//populate it
-			$profile->user_id = $_SESSION['user_id'];
+			$profile->user_id = $user_id;
 			$profile->first_name = $_POST['first_name'];
 			$profile->middle_name = $_POST['middle_name'];
 			$profile->last_name = $_POST['last_name'];
 			//insert it
 			$profile->insert();
 			//redirect
-			header('location:/Profile/index');
+			header('location:/Publication/create');
+			}
 		}else{
 			$this->view('Profile/create');
 		}

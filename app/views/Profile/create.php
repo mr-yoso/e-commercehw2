@@ -6,6 +6,9 @@
 </head>
 <body>
 	<div class='container'>
+		<?php
+		echo $_SESSION["user_id"];
+		?>
 		<form method='post' action=''>
 			<div class="form-group">
 				<label>First name:<input type="text" class="form-control" name="first_name" placeholder="Jon" /></label>

@@ -10,7 +10,7 @@ class Publication extends \app\core\Model
     public $profile_id;
     public $publication_title;
     public $publication_text;
-    public $timestampp;
+    // public $timestampp;
     public $publication_status;
 
     //CRUD
@@ -18,14 +18,14 @@ class Publication extends \app\core\Model
     //create
     public function insert()
     {
-        $SQL = 'INSERT INTO publication(profile_id,publication_title;,publication_text,timestamp,publication_status) VALUE (:profile_id,:publication_title;,:publication_text,:timestampp,:publication_status)';
+        $SQL = 'INSERT INTO publication (profile_id,publication_title,publication_text,publication_status) VALUE (:profile_id,:publication_title,:publication_text,:publication_status)';
         $STMT = self::$_conn->prepare($SQL);
         $STMT->execute(
             [
                 'profile_id' => $this->profile_id,
                 'publication_title' => $this->publication_title,
                 'publication_text' => $this->publication_text,
-                'timestamp' => $this->timestampp,
+                // 'timestamp' => $this->timestampp,
                 'publication_status' => $this->publication_status
             ]
         );
@@ -53,7 +53,7 @@ class Publication extends \app\core\Model
         return $STMT->fetchAll();//return all records
     }
 
-    public function getByProfile($name)
+    public function getByProfile($profile_id)
     {//search
         $SQL = 'SELECT * FROM publication WHERE profile_id = :profile_id';
         $STMT = self::$_conn->prepare($SQL);
@@ -69,14 +69,14 @@ class Publication extends \app\core\Model
     //you can't change the user_id that's a business logic choice that gets implemented in the model
     public function update()
     {
-        $SQL = 'UPDATE profile SET profile_id=:profile_id,publication_title=:publication_title,publication_text=:publication_text,timestamp=:timestamp,publication_status=:publication_status WHERE publication_id = :publication_id';//add profile_id if we choose to add it
+        $SQL = 'UPDATE profile SET profile_id=:profile_id,publication_title=:publication_title,publication_text=:publication_text,publication_status=:publication_status WHERE publication_id = :publication_id';//add profile_id if we choose to add it
         $STMT = self::$_conn->prepare($SQL);
         $STMT->execute(
             [
                 'profile_id' => $this->profile_id,//recheck to see if we'll keep this as part of the update
                 'publication_title' => $this->publication_title,
                 'publication_text' => $this->publication_text,
-                'timestamp' => $this->timestampp,
+                // 'timestamp' => $this->timestampp,
                 'publication_status' => $this->publication_status
             ]
         );
@@ -92,5 +92,13 @@ class Publication extends \app\core\Model
         );
     }
 
+
+    public function getTime($publication_id){
+        $SQL = 'SELECT timestamp FROM publication where publication_id = :publication_id';
+        $STMT = self::$_conn->prepare($SQL);
+        $STMT->execute(
+            ['publication_id' => $this->publication_id]
+        );
+    }
 
 }

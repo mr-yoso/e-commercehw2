@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Mar 15, 2024 at 07:22 PM
+-- Generation Time: Mar 18, 2024 at 06:13 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -46,7 +46,7 @@ CREATE TABLE `publication` (
   `profile_id` int(11) NOT NULL,
   `publication_title` varchar(60) NOT NULL,
   `publication_text` varchar(60) NOT NULL,
-  `timestamp` date NOT NULL,
+  `timestamp` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `publication_status` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -60,7 +60,7 @@ CREATE TABLE `publication_comment` (
   `publication_comment_id` int(11) NOT NULL,
   `profile_id` int(11) NOT NULL,
   `publication_id` int(11) NOT NULL,
-  `timestamp` date NOT NULL
+  `timestamp` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
