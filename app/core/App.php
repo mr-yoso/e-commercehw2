@@ -1,41 +1,87 @@
 <?php
 namespace app\core;
 
-class App
-{
+class App{
     private $routes = [];
 
-    public function addRoute($url, $handler)
-    {
+/*  'Friend/add/{id1}/{id2}' => 'Person,edit'*/
+/*  'Friend/add/(?<id1>[^\/])/(?<id2>[^\/])' => 'Person,edit'*/
+/*  Friend/add/123/456*/
+
+    public function addRoute($url,$handler){
         $url = preg_replace('/{([^\/]+)}/', '(?<$1>[^\/]+)', $url);
         $this->routes[$url] = $handler;
     }
 
-    //defined a few routes "url"=>"controller,method"
-    public function __construct()
-    {
-        $url = $_GET['url'];
-
-        //defined a few routes "url"=>"controller,method"
-        $routes = [
-            'Main/' => 'Contact,mainIndex',
-            'Main/about_us' => 'Contact,mainAboutUs',
-            'Contact/index' => 'Contact,contactIndex',
-            'Contact/read' => 'Contact,contactRead',
-            'Contact/send' => 'Contact,send'
-        ];
-
+    public function resolve($url){
+        $matches = [];
         //one by one compare the url to resolve the route
-        foreach ($routes as $routeUrl => $controllerMethod) {
-            if ($url == $routeUrl) {//match the route
-                //run the route
-                [$controller, $method] = explode(',', $controllerMethod);
-                $controller = '\\app\\controllers\\' . $controller;
-                $controller = new $controller();
-                $controller->$method();
-                //make sure that we don't run a second route
-                break;
+        foreach ($this->routes as $routePattern => $controllerMethod) {
+            if(preg_match("#^$routePattern$#", $url, $matches)){//match the route
+
+                /*print_r($matches);
+                echo "\n";*/
+
+                // Filter named parameters
+                $namedParams = array_filter($matches,
+                    function($key) {
+                        return !is_numeric($key);
+                    }
+                    , ARRAY_FILTER_USE_KEY);
+
+                /*print_r($namedParams);
+                echo "\n";*/
+
+                return [$controllerMethod, $namedParams];
             }
         }
+        return false;
+    }
+
+    function filtered($controllerInstance, $method){
+
+        //create an object that can get information about the controller
+        $reflection = new \ReflectionClass($controllerInstance);
+        //get the attributes from the controller
+        $classAttributes = $reflection->getAttributes();
+        $methodAttributes = $reflection->getMethod($method)->getAttributes();
+
+        $attributes = array_merge($classAttributes,$methodAttributes);
+
+        foreach ($attributes as $attribute) {
+            //instantiate the filter
+            $filter = $attribute->newInstance();
+            //run the filter and test if redirected
+            if($filter->redirected()){
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+    function __construct(){
+    	//call the appropriate controller class and method to handle the HTTP Request
+        //Routing version 1.0
+
+        $url = $_GET['url'];
+
+        include('app/routes.php');
+
+        [$controllerMethod, $namedParams] = $this->resolve($url);
+
+        if(!$controllerMethod){ return;  }
+
+        [$controller,$method] = explode(',', $controllerMethod);
+
+        $controller = '\app\controllers\\' . $controller;
+        $controllerInstance = new $controller();
+
+        if($this->filtered($controllerInstance, $method)){
+            return;
+        }
+
+        call_user_func_array([$controllerInstance, $method], $namedParams);
+
     }
 }
