@@ -20,8 +20,8 @@ SET time_zone = "+00:00";
 --
 -- Database: `HwDatabase`
 --
-CREATE DATABASE HwDatabase;
-USE HwDatabase;
+CREATE DATABASE IF NOT EXISTS `HwDatabase` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+USE `HwDatabase`;
 -- --------------------------------------------------------
 
 --
