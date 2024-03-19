@@ -13,3 +13,4 @@ $this->addRoute('Profile/delete', 'Profile,delete');
 $this->addRoute('Profile/delete', 'Profile,delete');
 $this->addRoute('Publication/index', 'Publication,index');
 $this->addRoute('Publication/create', 'Publication,create');
+$this->addRoute('Publication/modify', 'Publication,modify');

@@ -75,4 +75,7 @@ class Profile extends \app\core\Controller{
 			$this->view('Profile/delete',$profile);
 		}
 	}
+
+
+	
 }

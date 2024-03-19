@@ -60,7 +60,7 @@ class Publication extends \app\core\Model
         $STMT->execute(
             ['profile_id' => $profile_id]
         );
-        $STMT->setFetchMode(PDO::FETCH_CLASS, 'app\models\Profile');//set the type of data returned by fetches
+        $STMT->setFetchMode(PDO::FETCH_CLASS, 'app\models\Publication');//set the type of data returned by fetches
         return $STMT->fetchAll();//return all records
     }
 

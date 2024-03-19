@@ -9,12 +9,11 @@ class Publication extends \app\core\Controller
 
     public function index()
     {
-        $profile_id = $_SESSION['profile_id'];
-
-        $publication = new \app\models\Publication();
-
-        $this->view('Publication/index', $publication);
+        $publicationModel = new \app\models\Publication();
+        $publications = $publicationModel->getAll();
+        $this->view('Publication/index', ['publications' => $publications]);
     }
+    
 
     public function create()
     {
@@ -62,4 +61,31 @@ class Publication extends \app\core\Controller
         }
     }
 
+
+
+    
+	public function modify(){
+ 
+		$publicationModel = new \app\models\Publication();
+        $publication = $publicationModel->getByProfile($_SESSION['profile_id']);
+
+        if($_SERVER['REQUEST_METHOD'] === 'POST'){
+
+            $profile_id =$_SESSION['profile_id'];
+            $publication->profile_id = $profile_id;
+            $publication->publication_title = $_POST['publication_title'];
+            $publication->publication_text = $_POST['publication_text'];
+            //check to see if we add timestamp here
+            $publication->publication_status = $_POST['publication_status'];
+            //insert it
+            $publication->update();
+
+            header('location:/Publication/index');
+        }else{
+            $this->view('Publication/modify', $publication);
+
+        }
+
+
+	}
 }
