@@ -2,10 +2,8 @@
 
 namespace app\controllers;
 
-#[\app\filters\Login]
 class Publication extends \app\core\Controller
 {
-    #[\app\filters\HasProfile]
     public function index()
     {
         $publicationModel = new \app\models\Publication();
@@ -28,11 +26,18 @@ class Publication extends \app\core\Controller
         $this->view('Publication/index', ['publications' => $publications]);
     }
 
+    #[\app\filters\HasProfile]
     public function create()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {//data is submitted through method POST
             //make a new profile object
             $publication = new \app\models\Publication();
+
+            if (!isset ($_SESSION['profile_id'])) {
+                header('Location: /User/login');
+                exit;
+            }
+
             //populate it
             $publication->profile_id = $_SESSION['profile_id'];
             $publication->publication_title = $_POST['publication_title'];
@@ -48,7 +53,7 @@ class Publication extends \app\core\Controller
         }
     }
 
-    //readjust this
+    #[\app\filters\HasProfile]
     public function delete()
     {
         //present the user with a form to confirm the deletion that is requested and delete if the form is submitted
@@ -69,10 +74,11 @@ class Publication extends \app\core\Controller
         }
     }
 
-    public function modify()
+    #[\app\filters\HasProfile]
+    public function modify($publication_id)
     {
         $publicationModel = new \app\models\Publication();
-        $publication = $publicationModel->getByPublication($_SESSION['publication_id']);
+        $publication = $publicationModel->getByPublication($publication_id);
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $publication->publication_title = $_POST['publication_title'];
@@ -83,7 +89,7 @@ class Publication extends \app\core\Controller
 
             header('location:/Publication/index');
         } else {
-            $this->view('Publication/modify', $publication);
+            $this->view('Publication/modify', ['publication' => $publication]);
         }
     }
 }

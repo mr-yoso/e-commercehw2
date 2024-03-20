@@ -94,11 +94,11 @@ class Publication extends \app\core\Model
     //you can't change the user_id that's a business logic choice that gets implemented in the model
     public function update()
     {
-        $SQL = 'UPDATE publication SET profile_id=:profile_id,publication_title=:publication_title,publication_text=:publication_text,publication_status=:publication_status WHERE publication_id = :publication_id';//add profile_id if we choose to add it
+        $SQL = 'UPDATE publication SET publication_title=:publication_title,publication_text=:publication_text,publication_status=:publication_status WHERE publication_id = :publication_id';//add profile_id if we choose to add it
         $STMT = self::$_conn->prepare($SQL);
         $STMT->execute(
             [
-                'profile_id' => $this->profile_id,//recheck to see if we'll keep this as part of the update
+                'publication_id' => $this->publication_id,
                 'publication_title' => $this->publication_title,
                 'publication_text' => $this->publication_text,
                 // 'timestamp' => $this->timestampp,

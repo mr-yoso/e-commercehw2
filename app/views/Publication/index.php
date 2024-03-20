@@ -21,22 +21,37 @@
                 <a href="/User/login">Login</a>
                 <a href="/User/logout">Logout</a>
                 <a href="/User/register">Signup</a>
-                <a href="/Profile/index"><button>Modify Account</button></a>
+                <a href="/Profile/index"><button>My Profile</button></a>
             </nav>
         </header>
 
-        <?php
-        if (!empty ($data['publications'])) {
-            foreach ($data['publications'] as $publication) {
-                echo "<h1>{$publication->publication_title}</h1><br><p>{$publication->publication_text} {$publication->timestamp}</p>";
-            }
-        } else {
-            echo "<p>No publications found.</p>";
-        }
-        ?>
-
         <a href="/Publication/create"><button>Create Message</button></a>
-        <a href="/Publication/modify"><button>Modify My Messages</button></a>
+
+        <?php foreach ($publications as $publication): ?>
+            <div class="mb-3">
+                <h3>
+                    <!-- Link to the publication detail view -->
+                    <a href="/Publication/view/<?= $publication->publication_id ?>">
+                        <?= htmlspecialchars($publication->publication_title) ?>
+                    </a>
+                </h3>
+                <p>
+                    <?= nl2br(htmlspecialchars($publication->publication_text)) ?>
+                </p>
+                <small>Published:
+                    <?= $publication->timestamp ?> | Status:
+                    <?= ucfirst($publication->publication_status) ?>
+                </small>
+                <?php if ($publication->profile_id == $_SESSION['profile_id']): ?>
+                    <div>
+                        <a href="/Publication/modify/<?= $publication->publication_id ?>"
+                            class="btn btn-secondary btn-sm">Edit</a>
+                        <a href="/Publication/delete/<?= $publication->publication_id ?>"
+                            class="btn btn-danger btn-sm">Delete</a>
+                    </div>
+                <?php endif; ?>
+            </div>
+        <?php endforeach; ?>
     </div>
 </body>
 
