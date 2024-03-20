@@ -6,9 +6,8 @@ use PDO;
 class Profile extends \app\core\Model
 {
     public $profile_id;//PK
-    public $user_id;
+    public $user_id; //FK
     public $first_name;
-
     public $middle_name;
     public $last_name;
 
@@ -29,6 +28,16 @@ class Profile extends \app\core\Model
         );
     }
 
+    public function getProfileId($user_id)
+    {
+        $SQL = 'SELECT profile_id FROM profile WHERE user_id = :user_id';
+    $STMT = self::$_conn->prepare($SQL);
+    $STMT->execute(['user_id' => $user_id]);
+    $STMT->setFetchMode(PDO::FETCH_ASSOC); // Fetch as associative array
+    $result = $STMT->fetch();
+    return $result ? $result['profile_id'] : null; // Return the profile_id or null if not found
+    }
+
     //read
     public function getForUser($user_id)
     {
@@ -38,7 +47,7 @@ class Profile extends \app\core\Model
             ['user_id' => $user_id]
         );
         //there is a mistake in the next line
-        $STMT->setFetchMode(PDO::FETCH_CLASS, 'app\models\profile');//set the type of data returned by fetches
+        $STMT->setFetchMode(PDO::FETCH_CLASS, 'app\models\Profile');//set the type of data returned by fetches
         return $STMT->fetch();//return (what should be) the only record
     }
 
@@ -88,6 +97,4 @@ class Profile extends \app\core\Model
             ['profile_id' => $this->profile_id]
         );
     }
-
-
 }

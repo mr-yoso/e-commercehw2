@@ -13,27 +13,27 @@
 
 <body>
     <div class='container'>
-    <form method='post' action=''>
-			<div class="form-group">
-				<label>Title:<input type="text" class="form-control" name="first_name" placeholder="Jon" value='<?= $data->publication_title?>' /></label>
-			</div>
-			<div class="form-group">
-				<label>Text:<input type="text" class="form-control" name="middle_name" placeholder="Jon" value='<?= $data->publication_text ?>' /></label>
-			</div>
-			<div class="form-group">
-            <input type="radio" name="publication_status" id="publication_status" value="1"><label
+        <form method='post' action=''>
+            <div class="form-group">
+                <label>Title:<input type="text" class="form-control" name="publication_title" placeholder="Jon"
+                        value='<?= $data->publication_title ?>' /></label>
+            </div>
+            <div class="form-group">
+                <label>Text:<input type="text" class="form-control" name="publication_text" placeholder="Jon"
+                        value='<?= $data->publication_text ?>' /></label>
+            </div>
+            <div class="form-group">
+                <input type="radio" name="publication_status" id="publication_status" value="1"><label
                     for="publication_status">Public</label>
                 <input type="radio" name="publication_status" id="publication_status" value="2"><label
                     for="publication_status">Private</label>
-			</div>
-			<div class="form-group">
-				<input type="submit" name="action" value="Record my profile" /> 
-				<a href='/Profile/index'>Cancel</a>
-			</div>
-		</form>
+            </div>
+            <div class="form-group">
+                <input type="submit" name="action" value="Record my profile" />
+                <a href='/Publication/index'>Cancel</a>
+            </div>
+        </form>
     </div>
 </body>
 
 </html>
-
-

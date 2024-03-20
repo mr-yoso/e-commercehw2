@@ -32,7 +32,7 @@ class User extends \app\core\Controller{
 
 		session_destroy();
 
-		header('location:/User/login');
+		header('location:/Publication/index');
 	}
 
 	function securePlace(){
