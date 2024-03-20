@@ -22,9 +22,9 @@
                         class="form-control"></textarea></label>
             </div>
             <div class="form-group">
-                <input type="radio" name="publication_status" id="publication_status" value="1"><label
+                <input type="radio" name="publication_status" id="publication_status" value="public"><label
                     for="publication_status">Public</label>
-                <input type="radio" name="publication_status" id="publication_status" value="2"><label
+                <input type="radio" name="publication_status" id="publication_status" value="private"><label
                     for="publication_status">Private</label>
             </div>
             <div class="form-group">

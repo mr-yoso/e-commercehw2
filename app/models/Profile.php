@@ -16,7 +16,7 @@ class Profile extends \app\core\Model
     //create
     public function insert()
     {
-        $SQL = 'INSERT INTO profile(user_id,first_name,middle_name,last_name) VALUE (:user_id,:first_name,:middle_name,:last_name)';
+        $SQL = 'INSERT INTO profile (user_id,first_name,middle_name,last_name) VALUES (:user_id,:first_name,:middle_name,:last_name)';
         $STMT = self::$_conn->prepare($SQL);
         $STMT->execute(
             [
@@ -26,16 +26,6 @@ class Profile extends \app\core\Model
                 'last_name' => $this->last_name
             ]
         );
-    }
-
-    public function getProfileId($user_id)
-    {
-        $SQL = 'SELECT profile_id FROM profile WHERE user_id = :user_id';
-    $STMT = self::$_conn->prepare($SQL);
-    $STMT->execute(['user_id' => $user_id]);
-    $STMT->setFetchMode(PDO::FETCH_ASSOC); // Fetch as associative array
-    $result = $STMT->fetch();
-    return $result ? $result['profile_id'] : null; // Return the profile_id or null if not found
     }
 
     //read

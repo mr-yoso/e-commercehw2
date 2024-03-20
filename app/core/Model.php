@@ -11,7 +11,7 @@ class Model
     public function __construct()
     {
         $host = 'localhost';
-        $dbname = 'HwDatabase';
+        $dbname = 'assignment_2_database';
         $user = 'root';
         $pass = '';
         try { # MySQL with PDO_MYSQL

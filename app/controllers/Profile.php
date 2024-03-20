@@ -5,7 +5,6 @@ namespace app\controllers;
 #[\app\filters\Login]
 class Profile extends \app\core\Controller
 {
-
 	#[\app\filters\HasProfile]
 	public function index()
 	{
@@ -24,7 +23,6 @@ class Profile extends \app\core\Controller
 			$user_id = $_SESSION['user_id'];
 
 			if ($user_id) {
-
 				$profile = new \app\models\Profile();
 				//populate it
 				$profile->user_id = $user_id;
@@ -33,6 +31,8 @@ class Profile extends \app\core\Controller
 				$profile->last_name = $_POST['last_name'];
 				//insert it
 				$profile->insert();
+
+				$_SESSION['profile_id'] = $profile->profile_id;
 				//redirect
 				header('location:/Publication/index');
 			}
@@ -78,6 +78,9 @@ class Profile extends \app\core\Controller
 		if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 			// $publication->delete();
 			$profile->delete();
+
+			unset($_SESSION['profile_id']);
+			
 			header('location:/Profile/index');
 		} else {
 			$this->view('Profile/delete', $profile);

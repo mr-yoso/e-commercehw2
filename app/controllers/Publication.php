@@ -9,20 +9,32 @@ class Publication extends \app\core\Controller
     public function index()
     {
         $publicationModel = new \app\models\Publication();
-        $publications = $publicationModel->getAll();
+        $search_term = isset ($_GET['search']) ? $_GET['search'] : '';
+        $publications = [];
+
+        if (!$search_term) {
+            // Fetch all publications for both logged in and guest users
+            $publications = $publicationModel->getAllPublic();
+        } else {
+            // Search publications for logged in users
+            if ($_SESSION['profile_id']) {
+                $publications = $publicationModel->searchPublicationsLoggedIn($search_term, $_SESSION['profile_id']);
+            } else {
+                // Search publications for guest users
+                $publications = $publicationModel->searchPublicationsGuest($search_term);
+            }
+        }
+
         $this->view('Publication/index', ['publications' => $publications]);
     }
 
-    #[\app\filters\Login]
     public function create()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {//data is submitted through method POST
-            $profile = new \app\models\Profile();
-            $profile_id = $profile->getProfileId($_SESSION['user_id']);
             //make a new profile object
             $publication = new \app\models\Publication();
             //populate it
-            $publication->profile_id = $profile_id;
+            $publication->profile_id = $_SESSION['profile_id'];
             $publication->publication_title = $_POST['publication_title'];
             $publication->publication_text = $_POST['publication_text'];
             //check to see if we add timestamp here
@@ -47,10 +59,9 @@ class Publication extends \app\core\Controller
             }
         */
         $publication = new \app\models\Publication();
-        $publication = $publication->getForUser($_SESSION['publication_id']);
-
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $publication->profile_id = $_SESSION['profile_id'];
             $publication->delete();
             header('location:/Publication/index');
         } else {
@@ -60,18 +71,12 @@ class Publication extends \app\core\Controller
 
     public function modify()
     {
-
-
         $publicationModel = new \app\models\Publication();
-        $publication = $publicationModel->getForPublication($_SESSION['publication_id']);
+        $publication = $publicationModel->getByPublication($_SESSION['publication_id']);
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $profile = new \app\models\Profile();
-            $profile_id = $profile->getProfileId($_SESSION['user_id']);
-            $publication->profile_id = $profile_id;
             $publication->publication_title = $_POST['publication_title'];
             $publication->publication_text = $_POST['publication_text'];
-            //check to see if we add timestamp here
             $publication->publication_status = $_POST['publication_status'];
             //insert it
             $publication->update();
@@ -79,9 +84,6 @@ class Publication extends \app\core\Controller
             header('location:/Publication/index');
         } else {
             $this->view('Publication/modify', $publication);
-
         }
-
-
     }
 }
