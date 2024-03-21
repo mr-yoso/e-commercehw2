@@ -12,15 +12,15 @@
 </head>
 
 <body>
-	<header>
-		<nav>
-			<a href="/Publication/index">
-				<h1>Totally not fake website</h1>
-			</a>
-		</nav>
-	</header>
-	
 	<div class='container'>
+		<header>
+			<nav>
+				<a href="/Publication/index">
+					<h1>Totally not fake website</h1>
+				</a>
+			</nav>
+		</header>
+
 		<h1>User profile</h1>
 		<dl>
 			<dt>First name:</dt>
@@ -39,6 +39,20 @@
 		<a href='/Profile/modify'>Modify my profile</a> |
 		<a href='/Profile/delete'>Delete my profile</a> |
 		<a href='/Publication/index'>Return to main</a>
+		<h2>Private Publications</h2>
+		<?php foreach ($data->privatePublications as $publication): ?>
+			<div>
+				<h3>
+					<?= $publication->publication_title ?>
+				</h3>
+				<p>
+					<?= $publication->publication_text ?>
+				</p>
+				<p>Status:
+					<?= $publication->publication_status ?>
+				</p>
+			</div>
+		<?php endforeach; ?>
 	</div>
 </body>
 

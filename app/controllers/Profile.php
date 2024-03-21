@@ -8,12 +8,15 @@ class Profile extends \app\core\Controller
 	#[\app\filters\HasProfile]
 	public function index()
 	{
-		$profile = new \app\models\Profile();
-		$profile = $profile->getForUser($_SESSION['user_id']);
+		$profileModel = new \app\models\Profile();
+		$profile = $profileModel->getForUser($_SESSION['user_id']);
 
-		//redirect a user that has no profile to the profile creation URL
-		$this->view('Profile/index', $profile);
+		$publicationModel = new \app\models\Publication();
+		$privatePublications = $publicationModel->getByProfile($_SESSION['profile_id']);
+
+		$this->view('Profile/index', ['profile' => $profile, 'privatePublications' => $privatePublications]);
 	}
+
 
 	public function create()
 	{
@@ -80,7 +83,7 @@ class Profile extends \app\core\Controller
 			$profile->delete();
 
 			unset($_SESSION['profile_id']);
-			
+
 			header('location:/Profile/index');
 		} else {
 			$this->view('Profile/delete', $profile);

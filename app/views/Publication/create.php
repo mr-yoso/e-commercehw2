@@ -13,6 +13,9 @@
 
 <body>
     <div class='container'>
+        <a href="/Publication/index">
+            <h1>Totally not fake website</h1>
+        </a>
         <form method='post' action=''>
             <div class="form-group">
                 <label>Title: <input type="text" name="publication_title" class="form-control"></label>

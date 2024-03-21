@@ -18,9 +18,9 @@
                 <h1>Totally not fake website</h1>
             </a>
             <nav>
-                <a href="/User/login">Login</a>
-                <a href="/User/logout">Logout</a>
-                <a href="/User/register">Signup</a>
+                <a href="/User/login"><button>Login</button></a>
+                <a href="/User/logout"><button>Logout</button></a>
+                <a href="/User/register"><button>Signup</button></a>
                 <a href="/Profile/index"><button>My Profile</button></a>
             </nav>
         </header>
@@ -30,19 +30,26 @@
         <?php foreach ($publications as $publication): ?>
             <div class="mb-3">
                 <h3>
-                    <a href="/Publication/view/<?= $publication->publication_id; ?>">
-                        <?= $publication->publication_title; ?>
-                    </a>
+                    <?= $publication->publication_title; ?>
                 </h3>
-                <p><?= $publication->publication_text; ?></p>
-                <small>Published: <?= $publication->timestamp; ?> | Status: <?= $publication->publication_status; ?></small>
+                <p>
+                    <?= $publication->publication_text; ?>
+                </p>
+                <small>Published:
+                    <?= $publication->timestamp; ?> | Status:
+                    <?= $publication->publication_status; ?>
+                </small>
                 <?php if ($publication->profile_id == $_SESSION['profile_id']): ?>
                     <div>
-                    <a href="/Publication/modify/<?= $publication->publication_id; ?>" class="btn btn-secondary btn-sm">Edit</a>
-<a href="/Publication/delete/<?= $publication->publication_id; ?>" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this publication?');">Delete</a>
+                        <a href="/Publication/modify/<?= $publication->publication_id; ?>"
+                            class="btn btn-secondary btn-sm">Edit</a>
+                        <a href="/Publication/delete/<?= $publication->publication_id; ?>"
+                            class="btn btn-danger btn-sm">Delete</a>
 
                     </div>
                 <?php endif; ?>
+                <h2>Comments</h2>
+                <input type="text" name="comment" class="form-control">
             </div>
         <?php endforeach; ?>
     </div>

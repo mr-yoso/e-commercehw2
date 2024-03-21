@@ -54,23 +54,15 @@ class Publication extends \app\core\Controller
     }
 
     #[\app\filters\HasProfile]
-    public function delete()
+    public function delete($publication_id)
     {
-        //present the user with a form to confirm the deletion that is requested and delete if the form is submitted
-        /*		//make sure that the user is logged in
-            if(!isset($_SESSION['user_id'])){
-                header('location:/User/login');
-                return;
-            }
-        */
-        $publication = new \app\models\Publication();
-
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $publication->profile_id = $_SESSION['profile_id'];
+            $publication = new \app\models\Publication();
+            $publication->publication_id = $publication_id;
             $publication->delete();
             header('location:/Publication/index');
         } else {
-            $this->view('Publication/delete', $publication);
+            $this->view('Publication/delete', ['publication_id' => $publication_id]);
         }
     }
 
