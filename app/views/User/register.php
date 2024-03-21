@@ -12,7 +12,9 @@
 </head>
 
 <body>
-	<header>
+	
+	<div class='container'>
+		<header>
 		<nav>
 			<a href="/Publication/index">
 				<h1>Totally not fake website</h1>
@@ -20,7 +22,6 @@
 		</nav>
 	</header>
 
-	<div class='container'>
 		<form method='post' action=''>
 			<div class="form-group">
 				<label>Username:<input type="text" class="form-control" name="username" placeholder="Jon" /></label>

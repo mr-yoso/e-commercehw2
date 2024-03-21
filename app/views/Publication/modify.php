@@ -16,7 +16,6 @@
 
 <body>
     <div class='container'>
-        <!-- Check if we're editing an existing publication and adjust the form's action URL accordingly -->
         <form method="post"
             action="<?= isset ($publication->publication_id) ? '/Publication/modify/' . $publication->publication_id : '/Publication/modify'; ?>">
             <div class="form-group">

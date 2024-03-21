@@ -8,22 +8,22 @@ class Publication extends \app\core\Controller{
     {
         $commentModel = new \app\models\PublicationComment();
         $comments = $commentModel->getByPublication($publication_id);
-        $this->view('PublicationComment/index', ['comments' => $comments, 'publication_id' => $publication_id]);
+        $this->view('Publication/index', ['comments' => $comments, 'publication_id' => $publication_id]);
     }
 
     #[\app\filters\HasProfile]
     public function create($publication_id)
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_SESSION['profile_id'])) {
-            $comment = new \app\models\PublicationComment();
-            $comment->profile_id = $_SESSION['profile_id'];
-            $comment->publication_id = $publication_id;
-            $comment->comment_text = $_POST['comment_text'];
-            $comment->insert();
+            $comments = new \app\models\PublicationComment();
+            $comments->profile_id = $_SESSION['profile_id'];
+            $comments->publication_id = $publication_id;
+            $comments->comment = $_POST['comment'];
+            $comments->insert();
 
-            header("Location: /PublicationComment/index/$publication_id");
+            header("Location: /Publication/index/$publication_id");
         } else {
-            $this->view('PublicationComment/create', ['publication_id' => $publication_id]);
+            $this->view('Publication/create', ['publication_id' => $publication_id]);
         }
 
 
@@ -37,9 +37,9 @@ class Publication extends \app\core\Controller{
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && $comment && $comment->profile_id == $_SESSION['profile_id']) {
             $commentModel->delete($comment_id);
-            header("Location: /PublicationComment/index/{$comment->publication_id}");
+            header("Location: /Publication/index/{$comment->publication_id}");
         } else {
-            $this->view('PublicationComment/delete', ['comment' => $comment]);
+            $this->view('Publication/delete', ['comment' => $comment]);
         }
     }
 
@@ -53,9 +53,9 @@ class Publication extends \app\core\Controller{
             $comment->comment_text = $_POST['comment_text'];
             $comment->update();
 
-            header("Location: /PublicationComment/index/{$comment->publication_id}");
+            header("Location: /Publication/index/{$comment->publication_id}");
         } else {
-            $this->view('PublicationComment/modify', ['comment' => $comment]);
+            $this->view('Publication/modify', ['comment' => $comment]);
         }
     }
 }

@@ -48,10 +48,25 @@
 
                     </div>
                 <?php endif; ?>
+
+
+
                 <h2>Comments</h2>
-                <input type="text" name="comment" class="form-control">
-            </div>
-        <?php endforeach; ?>
+                <?php if (!empty($publication->comments)): ?>
+            <?php foreach ($publication->comments as $comment): ?>
+                <div class="comment mb-2">
+                    <p><?= $comment->comment_text; ?></p>
+                </div>
+            <?php endforeach; ?>
+        <?php else: ?>
+            <p>No comments yet.</p>
+        <?php endif; ?>
+      <form action="/Publication/index/<?= $publication_id; ?>" method="post">
+    <textarea name="comment" class="form-control mb-2" placeholder="Write a comment..."></textarea>
+    <button type="submit" class="btn btn-primary">Post Comment</button>
+</form>
+    </div>
+<?php endforeach; ?>
     </div>
 </body>
 

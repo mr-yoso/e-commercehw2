@@ -9,28 +9,27 @@ class Publication extends \app\core\Controller
         $publicationModel = new \app\models\Publication();
         $search_term = isset ($_GET['search']) ? $_GET['search'] : '';
         $publications = [];
-
+        $commentModel = new \app\models\PublicationComment();
+        $comments = [];
         if (!$search_term) {
-            // Fetch all publications for both logged in and guest users
             $publications = $publicationModel->getAllPublic();
         } else {
-            // Search publications for logged in users
             if ($_SESSION['profile_id']) {
                 $publications = $publicationModel->searchPublicationsLoggedIn($search_term, $_SESSION['profile_id']);
+                $commentModel->getByPublication($publication_id);
+                $comments = $commentModel;
             } else {
-                // Search publications for guest users
                 $publications = $publicationModel->searchPublicationsGuest($search_term);
+                $commentModel->getByPublication($publication_id);
+                $comments = $commentModel;
             }
         }
-
-        $this->view('Publication/index', ['publications' => $publications]);
+        $this->view('Publication/index', ['publications' => $publications,'comments'=>$comments]);
     }
-
     #[\app\filters\HasProfile]
     public function create()
     {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {//data is submitted through method POST
-            //make a new profile object
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $publication = new \app\models\Publication();
 
             if (!isset ($_SESSION['profile_id'])) {
@@ -38,15 +37,11 @@ class Publication extends \app\core\Controller
                 exit;
             }
 
-            //populate it
             $publication->profile_id = $_SESSION['profile_id'];
             $publication->publication_title = $_POST['publication_title'];
             $publication->publication_text = $_POST['publication_text'];
-            //check to see if we add timestamp here
             $publication->publication_status = $_POST['publication_status'];
-            //insert it
             $publication->insert();
-            //redirect
             header('location:/Publication/index');
         } else {
             $this->view('Publication/create');
@@ -76,7 +71,6 @@ class Publication extends \app\core\Controller
             $publication->publication_title = $_POST['publication_title'];
             $publication->publication_text = $_POST['publication_text'];
             $publication->publication_status = $_POST['publication_status'];
-            //insert it
             $publication->update();
 
             header('location:/Publication/index');

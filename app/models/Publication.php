@@ -90,8 +90,7 @@ class Publication extends \app\core\Model
         );
     }
 
-    //update
-    //you can't change the user_id that's a business logic choice that gets implemented in the model
+ 
     public function update()
     {
         $SQL = 'UPDATE publication SET publication_title=:publication_title,publication_text=:publication_text,publication_status=:publication_status WHERE publication_id = :publication_id';//add profile_id if we choose to add it
