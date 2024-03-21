@@ -30,24 +30,17 @@
         <?php foreach ($publications as $publication): ?>
             <div class="mb-3">
                 <h3>
-                    <!-- Link to the publication detail view -->
-                    <a href="/Publication/view/<?= $publication->publication_id ?>">
-                        <?= htmlspecialchars($publication->publication_title) ?>
+                    <a href="/Publication/view/<?= $publication->publication_id; ?>">
+                        <?= $publication->publication_title; ?>
                     </a>
                 </h3>
-                <p>
-                    <?= nl2br(htmlspecialchars($publication->publication_text)) ?>
-                </p>
-                <small>Published:
-                    <?= $publication->timestamp ?> | Status:
-                    <?= ucfirst($publication->publication_status) ?>
-                </small>
+                <p><?= $publication->publication_text; ?></p>
+                <small>Published: <?= $publication->timestamp; ?> | Status: <?= $publication->publication_status; ?></small>
                 <?php if ($publication->profile_id == $_SESSION['profile_id']): ?>
                     <div>
-                        <a href="/Publication/modify/<?= $publication->publication_id ?>"
-                            class="btn btn-secondary btn-sm">Edit</a>
-                        <a href="/Publication/delete/<?= $publication->publication_id ?>"
-                            class="btn btn-danger btn-sm">Delete</a>
+                    <a href="/Publication/modify/<?= $publication->publication_id; ?>" class="btn btn-secondary btn-sm">Edit</a>
+<a href="/Publication/delete/<?= $publication->publication_id; ?>" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this publication?');">Delete</a>
+
                     </div>
                 <?php endif; ?>
             </div>
