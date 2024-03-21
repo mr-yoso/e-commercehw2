@@ -52,6 +52,7 @@
 
 
                 <h2>Comments</h2>
+<<<<<<< Updated upstream
                 <?php if (!empty($publication->comments)): ?>
             <?php foreach ($publication->comments as $comment): ?>
                 <div class="comment mb-2">
@@ -67,6 +68,12 @@
 </form>
     </div>
 <?php endforeach; ?>
+=======
+                <input type="text" name="comment" class="form-control">
+                <button>Publish comment</button>
+            </div>
+        <?php endforeach; ?>
+>>>>>>> Stashed changes
     </div>
 </body>
 

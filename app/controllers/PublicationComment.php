@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+#[\app\filters\Login]
 class Publication extends \app\core\Controller{
 
     public function index($publication_id)
